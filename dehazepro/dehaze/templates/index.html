@@ -1,0 +1,185 @@
+<!-- 親テンプレートを読み込む-->
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<div class="content-wrapper">
+<div class="container-fluid">
+<div class="mt-5 text-center">
+<div class="alert alert-primary alert-dismissible" role="alert">
+<p style="margin-bottom:1em;"><h3><b>画像の霧除去</b></h3></p>
+<hr>
+<h4>
+<ol>
+<li style="margin-bottom:1em;" align="left">霧がかかった画像を入力してください。</li>
+<!--<li style="margin-bottom:1em;" align="left">画像ファイルは複数同時に選択してアップロードすることができます。</li>-->
+</ol>
+</h4>
+</div>
+</div>
+<hr>
+<div id="app">
+
+<div class="mt-5 text-center">
+<form>
+  <div style="display:inline-flex">
+  <input type="file" name="files[]" @change="onFileChange">
+  </div>
+  <button type="button" v-on:click.stop='sendmessage'>ボタン</button>
+</form>
+<hr>
+
+  <img
+      v-show="uploadedImage"
+      class="margin"
+      v-bind:src="uploadedImage"
+      width="256"
+      height="256"
+      alt=""
+    />
+  <img v-show="output" class="margin" v-bind:src="dataUrl" width="256" height="256" alt="出力画像"/>
+    <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
+    <button type="button" v-on:click.stop='remove'>close</button>
+      <p class="preview-item-name">[[ img_name ]]</p>
+    </div>
+</div>
+
+
+
+{% if message %}
+<div class="alert alert-danger" role="alert">
+<h4><font color="red">{{message}}<br></font> </h4>
+</div>
+{% endif %}
+<hr>
+<h4><p style="margin-bottom:1em;">入力画像例</p></h4>
+
+
+
+
+<!-- 画像表示 -->
+<div class="container">
+  <div class="row">
+    <div class="col-xs-3">
+      <div class="thumbnail">
+        <img src="{% static 'img/sample1.jpg' %}" width="45px" height="45px">
+      <div class="caption">画像例1</div>
+    </div>
+  </div>
+  <div class="col-xs-3">
+      <div class="thumbnail">
+        <img src="{% static 'img/sample2.jpg' %}" width="45px" height="45px">
+      <div class="caption">画像例2</div>
+    </div>
+  </div>
+  <div class="col-xs-3">
+      <div class="thumbnail">
+        <img src="{% static 'img/sample3.jpg' %}" width="45px" height="45px">
+      <div class="caption">画像例3</div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- 画像表示 -->
+</div>
+</div>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+
+var vm = new Vue({
+
+  el: '#app',
+  delimiters: ['[[', ']]'],
+  
+  data: function () {
+                return{        
+        msg: "{% static 'img/sample1.jpg' %}",
+        result:[],
+        file:"",
+        files:[],
+        uploadedImage: '',
+        img_name: '',
+        output:"",
+        dataUrl: "",
+                }
+            },
+  methods: {
+      showMessage: function () {
+          this.msg = "{% static 'img/sample1.jpg' %}";
+          console.log(this.msg);
+      },
+      deleteMessage: function () {
+          this.msg = "";
+      },
+      showdata: function (){
+        axios.get("{% url 'item' %}")
+          .then(function (response) {
+            for(var d in response.data) {
+              var item = response.data[d];
+              vm.msg = item;
+            }
+            console.log(response.data)
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .then(function () {
+          });
+      },
+      sendmessage: function(){
+        csrftoken = Cookies.get('csrftoken');
+        headers = {'X-CSRFToken': csrftoken};
+        let formData = new FormData();
+        formData.append('yourFile', this.file);
+        console.log(this.file)
+        axios.post("{% url 'upload' %}", formData, {headers: headers})
+        .then(function(response){
+          for(var d in response.data){
+            var item = response.data[d]
+            vm.result.push(item)
+            vm.output=(item[0][1])
+            const prefix = 'data:image/jpg;base64,';
+            vm.dataUrl = prefix + vm.output;            
+          }
+
+        })
+      },
+      onFileChange(e) {
+      this.output = "";
+      const files = e.target.files || e.dataTransfer.files;
+      this.createImage(files[0]);
+      this.file = files[0]
+      this.img_name = files[0].name;
+      this.item = {
+        "name":this.img_name
+      };
+      
+      console.log(files);
+      console.log(files[0]);
+
+      console.log(this.img_name)
+    },
+    // アップロードした画像を表示
+      createImage(file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.uploadedImage = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+      remove() {
+        this.uploadedImage = false;
+      },
+  
+      
+      }
+  });
+
+  
+
+
+</script>
+{% endblock content %}
