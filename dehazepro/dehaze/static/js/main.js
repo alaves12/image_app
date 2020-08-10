@@ -1,3 +1,17 @@
+function sendRequest(url, method, data){
+  var r = axios({
+      method: method,
+      url: url,
+      data: data,
+      xsrfCookieName: 'csrftoken',
+      xsrfHeaderName: 'x-CSRFToken',
+      headers: {
+          'X-Requested-with': 'XMLHttpRequest'
+      }
+  })
+  return r
+  }
+
 var vm = new Vue({
 
     el: '#app',
@@ -13,6 +27,8 @@ var vm = new Vue({
           img_name: '',
           output:"",
           dataUrl: "",
+          name:"",
+          sample1:"static/img/sample1.jpg"
                   }
               },
     methods: {
@@ -23,12 +39,27 @@ var vm = new Vue({
         deleteMessage: function () {
             this.msg = "";
         },
-        sendmessage: function(){
-          csrftoken = Cookies.get('csrftoken');
-          headers = {'X-CSRFToken': csrftoken};
-          let formData = new FormData();
-          formData.append('yourFile', this.file);
-          axios.post('upload/', formData, {headers: headers})
+
+        sendimage:function(){
+          var formData = new FormData();
+          formData.append('yourFile',this.file);
+          console.log(this.file);
+          console.log(formData);
+          sendRequest('processing/','post',formData)
+          .then(function(response){
+            var name = response
+            console.log(name)
+          })
+  
+        },   
+
+        sendmessage:function(){
+          console.log(this.file);
+          var formData = new FormData();
+          formData.append('yourFile',this.file);
+          
+
+          sendRequest('upload/','post',formData)
           .then(function(response){
             for(var d in response.data){
               var item = response.data[d]
@@ -49,8 +80,7 @@ var vm = new Vue({
         this.item = {
           "name":this.img_name
         };
-
-      },
+        },
       // アップロードした画像を表示
         createImage(file) {
           const reader = new FileReader();
@@ -62,7 +92,46 @@ var vm = new Vue({
         remove() {
           this.uploadedImage = false;
         },
-    
-        
+        onFileChange_1(e) {
+          console.log(e)
+          this.output = "";
+          const files = e.target.src;
+          this.createImage(files);
+          this.file = files
+          this.img_name = files[0].name;
+          this.item = {
+            "name":this.img_name
+          };
+          },
+        // アップロードした画像を表示
+          createImage(file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+              this.uploadedImage = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          },
+          remove() {
+            this.uploadedImage = false;
+          },
+          
+          test1(){
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', this.sample1, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function(e) {
+              
+              var arrayBuffer = this.response;
+          
+              // Fileを生成する
+              var blob = new File([arrayBuffer], vm.sample1 ,{type: "image/jpg"});
+              vm.file = blob;
+              console.log(vm.file)
+              
+            };
+            xhr.send();
+            
+          },
+          
         }
     });

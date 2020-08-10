@@ -53,7 +53,15 @@
 <hr>
 <h4><p style="margin-bottom:1em;">入力画像例</p></h4>
 
-
+<form>
+  <p>
+  サンプルテスト
+  </p>
+  <p>
+  <input type="checkbox"  @change="test1"> 画像例1
+  <button type="button" v-on:click.prevent='sendmessage'>ボタン</button>
+  </p>
+</form>
 
 
 <!-- 画像表示 -->
@@ -61,19 +69,19 @@
   <div class="row">
     <div class="col-xs-3">
       <div class="thumbnail">
-        <img src="{% static 'img/sample1.jpg' %}" width="45px" height="45px">
+        <img src="{% static 'img/sample1.jpg' %}" width="256" height="256">
       <div class="caption">画像例1</div>
     </div>
   </div>
   <div class="col-xs-3">
       <div class="thumbnail">
-        <img src="{% static 'img/sample2.jpg' %}" width="45px" height="45px">
+        <img src="{% static 'img/sample2.jpg' %}" width="256" height="256">
       <div class="caption">画像例2</div>
     </div>
   </div>
   <div class="col-xs-3">
       <div class="thumbnail">
-        <img src="{% static 'img/sample3.jpg' %}" width="45px" height="45px">
+        <img src="{% static 'img/sample3.jpg' %}" width="256" height="256">
       <div class="caption">画像例3</div>
     </div>
   </div>
