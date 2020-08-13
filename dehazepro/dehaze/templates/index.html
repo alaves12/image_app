@@ -37,7 +37,7 @@
       alt=""
     />
   <img v-show="output" class="margin" v-bind:src="dataUrl" width="256" height="256" alt="出力画像"/>
-    <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
+    <div v-show="output" class="preview-item-btn" @click="remove">
     <button type="button" v-on:click.stop='remove'>close</button>
       <p class="preview-item-name">[[ img_name ]]</p>
     </div>
@@ -53,14 +53,18 @@
 <hr>
 <h4><p style="margin-bottom:1em;">入力画像例</p></h4>
 
-<form>
+
   <p>
   サンプルテスト
   </p>
-  <p>
-  <input type="checkbox"  @change="test1"> 画像例1
-  <button type="button" v-on:click.prevent='sendmessage'>ボタン</button>
-  </p>
+  <select name="sample" @change="test1">
+    <option value="">選択して下さい</option>
+    <option value="1" @click="test1">画像例1</option>
+    <option value="2" @click="test1">画像例2</option>
+    <option value="3" @click="test1">画像例3</option>
+    <input type="button" v-on:click.stop.prevent='sendmessage' value="テスト">
+    
+  </select>
 </form>
 
 

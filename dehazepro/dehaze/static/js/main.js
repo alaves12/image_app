@@ -28,7 +28,10 @@ var vm = new Vue({
           output:"",
           dataUrl: "",
           name:"",
-          sample1:"static/img/sample1.jpg"
+          sample1:"static/img/sample1.jpg",
+          sample2:"static/img/sample2.jpg",
+          sample3:"static/img/sample3.jpg",
+          
                   }
               },
     methods: {
@@ -91,25 +94,43 @@ var vm = new Vue({
         },
         remove() {
           this.uploadedImage = false;
+          this.img_name = false;
+          this.output = false;
         },
           
-          test1(){
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', this.sample1, true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function(e) {
-              
-              var arrayBuffer = this.response;
+        test1(e){
+          console.log(e.target.value)
           
-              // Fileを生成する
-              var blob = new File([arrayBuffer], vm.sample1 ,{type: "image/jpg"});
-              vm.file = blob;
-              console.log(vm.file)
-              
-            };
-            xhr.send();
+          try{
+          this.uploadedImage = false;
+          var xhr = new XMLHttpRequest();
+          if(e.target.value=="1"){
+          xhr.open('GET', this.sample1, true);
+          }
+          else if(e.target.value=="2"){
+            xhr.open('GET', this.sample2, true);
+          }
+          else if(e.target.value=="3"){
+          xhr.open('GET', this.sample3, true);
+          }
+          xhr.responseType = 'arraybuffer';
+          xhr.onload = function(e) {
             
-          },
-          
+            var arrayBuffer = this.response;
+        
+            // Fileを生成する
+            var blob = new File([arrayBuffer], vm.sample1 ,{type: "image/jpg"});
+            vm.file = blob;
+            console.log(vm.file)
+            
+          };
+          xhr.send();
+        }catch(e){
+          console.log("select a image");
         }
+        
+          
+        },
+        
+      }
     });
