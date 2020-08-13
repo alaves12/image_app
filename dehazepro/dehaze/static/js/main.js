@@ -92,28 +92,6 @@ var vm = new Vue({
         remove() {
           this.uploadedImage = false;
         },
-        onFileChange_1(e) {
-          console.log(e)
-          this.output = "";
-          const files = e.target.src;
-          this.createImage(files);
-          this.file = files
-          this.img_name = files[0].name;
-          this.item = {
-            "name":this.img_name
-          };
-          },
-        // アップロードした画像を表示
-          createImage(file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-              this.uploadedImage = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          },
-          remove() {
-            this.uploadedImage = false;
-          },
           
           test1(){
             var xhr = new XMLHttpRequest();
