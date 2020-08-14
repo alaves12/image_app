@@ -35,11 +35,11 @@ var vm = new Vue({
                   }
               },
     methods: {
-        showMessage: function () {
+        showMessage:function () {
             this.msg = "{% static 'img/sample1.jpg' %}";
             console.log(this.msg);
         },
-        deleteMessage: function () {
+        deleteMessage:function () {
             this.msg = "";
         },
 
@@ -105,17 +105,16 @@ var vm = new Vue({
           this.uploadedImage = false;
           var xhr = new XMLHttpRequest();
           if(e.target.value=="1"){
-          xhr.open('GET', this.sample1, true);
+          　xhr.open('GET', this.sample1, true);
           }
           else if(e.target.value=="2"){
             xhr.open('GET', this.sample2, true);
           }
           else if(e.target.value=="3"){
-          xhr.open('GET', this.sample3, true);
+          　xhr.open('GET', this.sample3, true);
           }
           xhr.responseType = 'arraybuffer';
           xhr.onload = function(e) {
-            
             var arrayBuffer = this.response;
         
             // Fileを生成する

@@ -17,8 +17,8 @@
 </div>
 </div>
 <hr>
-<div id="app">
 
+<div id="app">
 <div class="mt-5 text-center">
 <form>
   <div style="display:inline-flex">
@@ -27,15 +27,7 @@
   <button type="button" v-on:click.stop='sendmessage'>ボタン</button>
 </form>
 <hr>
-
-  <img
-      v-show="uploadedImage"
-      class="margin"
-      v-bind:src="uploadedImage"
-      width="256"
-      height="256"
-      alt=""
-    />
+  <img v-show="uploadedImage" class="margin" v-bind:src="uploadedImage" width="256" height="256" alt=""/>
   <img v-show="output" class="margin" v-bind:src="dataUrl" width="256" height="256" alt="出力画像"/>
     <div v-show="output" class="preview-item-btn" @click="remove">
     <button type="button" v-on:click.stop='remove'>close</button>
@@ -43,50 +35,46 @@
     </div>
 </div>
 
-
-
 {% if message %}
 <div class="alert alert-danger" role="alert">
 <h4><font color="red">{{message}}<br></font> </h4>
 </div>
 {% endif %}
 <hr>
-<h4><p style="margin-bottom:1em;">入力画像例</p></h4>
 
 
-  <p>
-  サンプルテスト
-  </p>
+<p>サンプルテスト</p>
+<form>
   <select name="sample" @change="test1">
     <option value="">選択して下さい</option>
     <option value="1" @click="test1">画像例1</option>
     <option value="2" @click="test1">画像例2</option>
     <option value="3" @click="test1">画像例3</option>
-    <input type="button" v-on:click.stop.prevent='sendmessage' value="テスト">
-    
+    <input type="button" v-on:click.stop.prevent='sendmessage' value="テスト"> 
   </select>
 </form>
 
-
+<hr>
+<h4><p style="margin-bottom:1em;">入力画像例</p></h4>
 <!-- 画像表示 -->
 <div class="container">
   <div class="row">
     <div class="col-xs-3">
-      <div class="thumbnail">
+      <div class="imagebox">
         <img src="{% static 'img/sample1.jpg' %}" width="256" height="256">
-      <div class="caption">画像例1</div>
+        <span>画像例1</span>
     </div>
   </div>
   <div class="col-xs-3">
-      <div class="thumbnail">
+      <div class="imagebox">
         <img src="{% static 'img/sample2.jpg' %}" width="256" height="256">
-      <div class="caption">画像例2</div>
+      <span>画像例2</span>
     </div>
   </div>
   <div class="col-xs-3">
-      <div class="thumbnail">
+      <div class="imagebox">
         <img src="{% static 'img/sample3.jpg' %}" width="256" height="256">
-      <div class="caption">画像例3</div>
+        <span>画像例3</span>
     </div>
   </div>
 </div>
