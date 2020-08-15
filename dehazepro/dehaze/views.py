@@ -21,6 +21,7 @@ model = Unet()
 model.load_state_dict(torch.load('dehaze/model/multi_U_151.pth', map_location=torch.device('cpu')))
 model.cpu()
 model.eval()
+
 def dehaze(input):
     with torch.no_grad():
         result = model(input)
@@ -33,17 +34,19 @@ def upload(request):
     files = request.FILES.getlist('yourFile')
     print(request.FILES)
     print("files", files)
-
+    
     #簡易エラーチェック（jpg拡張子）
     for memory_file in files:
         print("filename", memory_file)
         root, ext = os.path.splitext(memory_file.name)
+        print(ext)
      
         if ext != '.jpg':
-            message ="【ERROR】jpg以外の拡張子ファイルが指定されています。"
-            return render(request, 'index.html', {
-                "message": message,
-                })
+            message = "【ERROR】jpg以外の拡張子ファイルが指定されています。"
+            context = {
+            'message': message
+            }
+            return JsonResponse(data=context)
 
     if request.method =='POST' and files:
         result=[]
@@ -77,16 +80,6 @@ def upload(request):
 
             result.append((data1, data2))
 
-
-        '''
-        for file, label in zip(files, labels):
-            file.seek(0)
-            file_name = file
-            src = base64.b64encode(file.read())
-            src = str(src)[2:-1]
-            result.append((src, img_r))
-        '''
-        
         context = {
             'result': result
             }

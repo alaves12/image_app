@@ -94,7 +94,7 @@ var vm = new Vue({
         },
         remove() {
           this.uploadedImage = false;
-          this.img_name = false;
+          this.img_name = "";
           this.output = false;
         },
           
