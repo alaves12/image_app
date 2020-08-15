@@ -9,6 +9,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> 
 <!-- linkタグでcommon.cssファイルを読み込む -->
 <link rel="stylesheet" href="{% static 'css/common.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
 <!-- タイトルの設定-->
 <title>dehaze</title>
 <body>
@@ -19,7 +23,7 @@
 
 {% endblock %}
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
 
 </body>
 </html>
