@@ -21,6 +21,7 @@
 <div id="app">
 <div class="mt-5 text-center">
 <form>
+  {% csrf_token %}
   <div style="display:inline-flex">
   <input type="file" name="files[]" @change="onFileChange">
   </div>
@@ -45,6 +46,7 @@
 
 <p>サンプルテスト</p>
 <form>
+  {% csrf_token %}
   <select name="sample" @change="test1">
     <option value="">選択して下さい</option>
     <option value="1" @click="test1">画像例1</option>
