@@ -96,11 +96,3 @@ def upload(request):
         context = context.values()
         col = list(context)
         return JsonResponse(data=col, safe=False)
-            
-
-def item(request):
-    data = {
-        'name':"imai",
-        'age':"10"
-    }
-    return JsonResponse(data=data)

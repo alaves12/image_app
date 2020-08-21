@@ -43,19 +43,6 @@ var vm = new Vue({
             this.msg = "";
         },
 
-        sendimage:function(){
-          var formData = new FormData();
-          formData.append('yourFile',this.file);
-          console.log(this.file);
-          console.log(formData);
-          sendRequest('processing/','post',formData)
-          .then(function(response){
-            var name = response
-            console.log(name)
-          })
-  
-        },   
-
         sendmessage:function(){
           console.log(this.file);
           var formData = new FormData();
