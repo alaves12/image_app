@@ -17,33 +17,24 @@
 </div>
 </div>
 <hr>
-<div id="app">
 
+<div id="app">
 <div class="mt-5 text-center">
 <form>
+  {% csrf_token %}
   <div style="display:inline-flex">
   <input type="file" name="files[]" @change="onFileChange">
   </div>
   <button type="button" v-on:click.stop='sendmessage'>ボタン</button>
 </form>
 <hr>
-
-  <img
-      v-show="uploadedImage"
-      class="margin"
-      v-bind:src="uploadedImage"
-      width="256"
-      height="256"
-      alt=""
-    />
+  <img v-show="uploadedImage" class="margin" v-bind:src="uploadedImage" width="256" height="256" alt=""/>
   <img v-show="output" class="margin" v-bind:src="dataUrl" width="256" height="256" alt="出力画像"/>
-    <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
+    <div v-show="output" class="preview-item-btn" @click="remove">
     <button type="button" v-on:click.stop='remove'>close</button>
       <p class="preview-item-name">[[ img_name ]]</p>
     </div>
 </div>
-
-
 
 {% if message %}
 <div class="alert alert-danger" role="alert">
@@ -51,30 +42,41 @@
 </div>
 {% endif %}
 <hr>
+
+
+<p>サンプルテスト</p>
+<form>
+  {% csrf_token %}
+  <select name="sample" @change="test1">
+    <option value="">選択して下さい</option>
+    <option value="1" @click="test1">画像例1</option>
+    <option value="2" @click="test1">画像例2</option>
+    <option value="3" @click="test1">画像例3</option>
+    <input type="button" v-on:click.stop.prevent='sendmessage' value="テスト"> 
+  </select>
+</form>
+
+<hr>
 <h4><p style="margin-bottom:1em;">入力画像例</p></h4>
-
-
-
-
 <!-- 画像表示 -->
 <div class="container">
   <div class="row">
     <div class="col-xs-3">
-      <div class="thumbnail">
-        <img src="{% static 'img/sample1.jpg' %}" width="45px" height="45px">
-      <div class="caption">画像例1</div>
+      <div class="imagebox">
+        <img src="{% static 'img/sample1.jpg' %}" width="256" height="256">
+        <span>画像例1</span>
     </div>
   </div>
   <div class="col-xs-3">
-      <div class="thumbnail">
-        <img src="{% static 'img/sample2.jpg' %}" width="45px" height="45px">
-      <div class="caption">画像例2</div>
+      <div class="imagebox">
+        <img src="{% static 'img/sample2.jpg' %}" width="256" height="256">
+      <span>画像例2</span>
     </div>
   </div>
   <div class="col-xs-3">
-      <div class="thumbnail">
-        <img src="{% static 'img/sample3.jpg' %}" width="45px" height="45px">
-      <div class="caption">画像例3</div>
+      <div class="imagebox">
+        <img src="{% static 'img/sample3.jpg' %}" width="256" height="256">
+        <span>画像例3</span>
     </div>
   </div>
 </div>
@@ -84,102 +86,4 @@
 </div>
 </div>
 
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-<script>
-
-var vm = new Vue({
-
-  el: '#app',
-  delimiters: ['[[', ']]'],
-  
-  data: function () {
-                return{        
-        msg: "{% static 'img/sample1.jpg' %}",
-        result:[],
-        file:"",
-        files:[],
-        uploadedImage: '',
-        img_name: '',
-        output:"",
-        dataUrl: "",
-                }
-            },
-  methods: {
-      showMessage: function () {
-          this.msg = "{% static 'img/sample1.jpg' %}";
-          console.log(this.msg);
-      },
-      deleteMessage: function () {
-          this.msg = "";
-      },
-      showdata: function (){
-        axios.get("{% url 'item' %}")
-          .then(function (response) {
-            for(var d in response.data) {
-              var item = response.data[d];
-              vm.msg = item;
-            }
-            console.log(response.data)
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .then(function () {
-          });
-      },
-      sendmessage: function(){
-        csrftoken = Cookies.get('csrftoken');
-        headers = {'X-CSRFToken': csrftoken};
-        let formData = new FormData();
-        formData.append('yourFile', this.file);
-        console.log(this.file)
-        axios.post("{% url 'upload' %}", formData, {headers: headers})
-        .then(function(response){
-          for(var d in response.data){
-            var item = response.data[d]
-            vm.result.push(item)
-            vm.output=(item[0][1])
-            const prefix = 'data:image/jpg;base64,';
-            vm.dataUrl = prefix + vm.output;            
-          }
-
-        })
-      },
-      onFileChange(e) {
-      this.output = "";
-      const files = e.target.files || e.dataTransfer.files;
-      this.createImage(files[0]);
-      this.file = files[0]
-      this.img_name = files[0].name;
-      this.item = {
-        "name":this.img_name
-      };
-      
-      console.log(files);
-      console.log(files[0]);
-
-      console.log(this.img_name)
-    },
-    // アップロードした画像を表示
-      createImage(file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          this.uploadedImage = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-      remove() {
-        this.uploadedImage = false;
-      },
-  
-      
-      }
-  });
-
-  
-
-
-</script>
 {% endblock content %}
