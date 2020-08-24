@@ -4,5 +4,5 @@
 __pycache__
 *.pyc
 
-dehazepro/dehaze/static/img/input.jpg
-dehazepro/dehaze/static/img/output.jpg
+/dehazepro/dehaze/static/img/input.jpg
+/dehazepro/dehaze/static/img/output.jpg
