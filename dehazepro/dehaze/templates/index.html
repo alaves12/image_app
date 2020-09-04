@@ -25,7 +25,7 @@
   <div style="display:inline-flex">
   <input type="file" name="files[]" @change="onFileChange">
   </div>
-  <button type="button" v-on:click.stop='sendmessage'>ボタン</button>
+  <button type="button" v-on:click.stop='sendmessage(file)'>ボタン</button>
 </form>
 <hr>
   <img v-show="uploadedImage" class="margin" v-bind:src="uploadedImage" width="256" height="256" alt=""/>
@@ -52,7 +52,7 @@
     <option value="1" @click="test1">画像例1</option>
     <option value="2" @click="test1">画像例2</option>
     <option value="3" @click="test1">画像例3</option>
-    <input type="button" v-on:click.stop.prevent='sendmessage' value="テスト"> 
+    <input type="button" v-on:click.stop.prevent='sendmessage(samplefile)' value="テスト"> 
   </select>
 </form>
 
