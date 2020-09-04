@@ -28,6 +28,7 @@ var vm = new Vue({
           output:"",
           dataUrl: "",
           name:"",
+          samplefile:"",
           sample1:"static/img/sample1.jpg",
           sample2:"static/img/sample2.jpg",
           sample3:"static/img/sample3.jpg",
@@ -43,10 +44,10 @@ var vm = new Vue({
             this.msg = "";
         },
 
-        sendmessage:function(){
-          console.log(this.file);
+        sendmessage:function(file){
+          console.log(file);
           var formData = new FormData();
-          formData.append('yourFile',this.file);
+          formData.append('yourFile',file);
           
 
           sendRequest('upload/','post',formData)
@@ -106,8 +107,8 @@ var vm = new Vue({
         
             // Fileを生成する
             var blob = new File([arrayBuffer], vm.sample1 ,{type: "image/jpg"});
-            vm.file = blob;
-            console.log(vm.file)
+            vm.samplefile = blob;
+            console.log(vm.samplefile)
             
           };
           xhr.send();
