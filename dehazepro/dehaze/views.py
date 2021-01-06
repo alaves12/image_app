@@ -40,13 +40,6 @@ def upload(request):
         print("filename", memory_file)
         root, ext = os.path.splitext(memory_file.name)
         print(ext)
-     
-        if ext != '.jpg':
-            message = "【ERROR】jpg以外の拡張子ファイルが指定されています。"
-            context = {
-            'message': message
-            }
-            return JsonResponse(data=context)
 
     if request.method =='POST' and files:
         result=[]
